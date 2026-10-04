@@ -1,36 +1,46 @@
-// Função executada ao enviar o formulário de cadastro
-function cadastrarProfissional(event) {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("form-cadastro");
 
-    const nome = document.getElementById("nome").value.trim();
-    const profissao = document.getElementById("profissao").value.trim();
-    const cidade = document.getElementById("cidade").value.trim();
-    const bairro = document.getElementById("bairro").value.trim();
-    const whatsapp = document.getElementById("whatsapp").value.trim();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    if (!nome || !profissao || !cidade || !bairro || !whatsapp) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
+      const btnSubmit = form.querySelector('button[type="submit"]');
+      const textoOriginal = btnSubmit.textContent;
+      btnSubmit.textContent = "A guardar...";
+      btnSubmit.disabled = true;
 
-    const novoProfissional = {
-        id: profissionais.length + 1,
-        nome: nome,
-        servico: profissao,
-        cidade: cidade,
-        bairro: bairro,
-        whatsapp: whatsapp
-    };
+      const novoProfissional = {
+        nome: document.getElementById("nome").value,
+        categoria: document.getElementById("categoria").value,
+        localizacao: document.getElementById("localizacao").value,
+        telefone: document.getElementById("telefone").value
+      };
 
-    // Adiciona à lista local
-    profissionais.unshift(novoProfissional);
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(novoProfissional)
+        });
 
-    // Atualiza a exibição na tela imediatamente
-    if (typeof exibirProfissionais === "function") {
-        exibirProfissionais(profissionais);
-    }
+        alert("Perfil criado com sucesso! O teu registo foi guardado.");
+        form.reset();
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
 
-    // Limpa o formulário e avisa o utilizador
-    document.getElementById("form-cadastro").reset();
-    alert("Perfil criado com sucesso! O seu serviço já está visível na lista.");
-}
+      } catch (error) {
+        console.error("Erro ao guardar registo:", error);
+        alert("Ocorreu um erro ao guardar. Tenta novamente.");
+      } finally {
+        btnSubmit.textContent = textoOriginal;
+        btnSubmit.disabled = false;
+      }
+    });
+  }
+});
