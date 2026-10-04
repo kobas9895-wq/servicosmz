@@ -6,15 +6,32 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const btnSubmit = form.querySelector('button[type="submit"]');
-      const textoOriginal = btnSubmit.textContent;
-      btnSubmit.textContent = "A guardar...";
-      btnSubmit.disabled = true;
+      const textoOriginal = btnSubmit ? btnSubmit.textContent : "Criar Perfil";
+      
+      if (btnSubmit) {
+        btnSubmit.textContent = "A guardar...";
+        btnSubmit.disabled = true;
+      }
+
+      // Obtém os valores dos campos (com suporte a Cidade/Bairro ou Localização)
+      const nome = document.getElementById("nome") ? document.getElementById("nome").value : "";
+      const categoria = document.getElementById("categoria") ? document.getElementById("categoria").value : "";
+      const cidade = document.getElementById("cidade") ? document.getElementById("cidade").value : "";
+      const bairro = document.getElementById("bairro") ? document.getElementById("bairro").value : "";
+      const localizacaoCampo = document.getElementById("localizacao") ? document.getElementById("localizacao").value : "";
+      const telefone = document.getElementById("telefone") ? document.getElementById("telefone").value : "";
+
+      // Junta Cidade e Bairro caso existam separadamente
+      let localizacaoFinal = localizacaoCampo;
+      if (!localizacaoFinal && (cidade || bairro)) {
+        localizacaoFinal = [bairro, cidade].filter(Boolean).join(", ");
+      }
 
       const novoProfissional = {
-        nome: document.getElementById("nome").value,
-        categoria: document.getElementById("categoria").value,
-        localizacao: document.getElementById("localizacao").value,
-        telefone: document.getElementById("telefone").value
+        nome: nome,
+        categoria: categoria,
+        localizacao: localizacaoFinal,
+        telefone: telefone
       };
 
       try {
@@ -38,8 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Erro ao guardar registo:", error);
         alert("Ocorreu um erro ao guardar. Tenta novamente.");
       } finally {
-        btnSubmit.textContent = textoOriginal;
-        btnSubmit.disabled = false;
+        if (btnSubmit) {
+          btnSubmit.textContent = textoOriginal;
+          btnSubmit.disabled = false;
+        }
       }
     });
   }
