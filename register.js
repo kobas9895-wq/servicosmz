@@ -1,4 +1,4 @@
-// Função para cadastrar um novo profissional
+// Função executada ao enviar o formulário de cadastro
 function cadastrarProfissional(event) {
     event.preventDefault();
 
@@ -9,32 +9,28 @@ function cadastrarProfissional(event) {
     const whatsapp = document.getElementById("whatsapp").value.trim();
 
     if (!nome || !profissao || !cidade || !bairro || !whatsapp) {
-        alert("Por favor, preencha todos os campos!");
+        alert("Por favor, preencha todos os campos.");
         return;
     }
 
-    const novosProfissionais = obterProfissionais();
-
     const novoProfissional = {
-        id: Date.now(),
+        id: profissionais.length + 1,
         nome: nome,
-        profissao: profissao,
+        servico: profissao,
         cidade: cidade,
         bairro: bairro,
         whatsapp: whatsapp
     };
 
-    novosProfissionais.push(novoProfissional);
+    // Adiciona à lista local
+    profissionais.unshift(novoProfissional);
 
-    // Guarda na memória do navegador (localStorage)
-    localStorage.setItem("servicosmz_profissionais", JSON.stringify(novosProfissionais));
+    // Atualiza a exibição na tela imediatamente
+    if (typeof exibirProfissionais === "function") {
+        exibirProfissionais(profissionais);
+    }
 
-    alert("Perfil criado com sucesso!");
-
-    // Limpa o formulário e atualiza a lista no ecra
+    // Limpa o formulário e avisa o utilizador
     document.getElementById("form-cadastro").reset();
-    renderizarProfissionais(novosProfissionais);
-
-    // Rola a página para os resultados
-    window.location.hash = "#resultados";
+    alert("Perfil criado com sucesso! O seu serviço já está visível na lista.");
 }

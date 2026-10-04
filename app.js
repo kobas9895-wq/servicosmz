@@ -1,49 +1,48 @@
-// Função para exibir os profissionais na tela
-function renderizarProfissionais(lista) {
+// Função para renderizar os cards de profissionais no DOM
+function exibirProfissionais(lista) {
     const container = document.getElementById("resultados");
+    if (!container) return;
+
     container.innerHTML = "";
 
     if (lista.length === 0) {
-        container.innerHTML = "<p>Nenhum profissional encontrado para esta pesquisa.</p>";
+        container.innerHTML = "<p>Nenhum profissional encontrado com estes critérios.</p>";
         return;
     }
 
-    lista.forEach(p => {
+    lista.forEach(prof => {
         const card = document.createElement("div");
         card.className = "card-profissional";
         card.innerHTML = `
-            <h3>${p.nome}</h3>
-            <p><strong>Profissão:</strong> ${p.profissao}</p>
-            <p><strong>Localização:</strong> ${p.cidade} (${p.bairro})</p>
-            <a href="https://wa.me/258${p.whatsapp}?text=Olá%20${encodeURIComponent(p.nome)},%20encontrei%20o%20seu%20contacto%20no%20ServiçosMz." 
+            <h3>${prof.nome}</h3>
+            <p><strong>Serviço:</strong> ${prof.servico}</p>
+            <p><strong>Localização:</strong> ${prof.bairro}, ${prof.cidade}</p>
+            <a href="https://wa.me/258${prof.whatsapp}?text=Olá%20${encodeURIComponent(prof.nome)},%20encontrei%20o%20seu%20contacto%20no%20ServiçosMz!" 
                target="_blank" 
                class="btn-whatsapp">
-                Contactar via WhatsApp
+               Contactar via WhatsApp
             </a>
         `;
         container.appendChild(card);
     });
 }
 
-// Função de pesquisa
+// Função executada ao clicar no botão Pesquisar
 function pesquisar() {
-    const servico = document.getElementById("servico").value.toLowerCase().trim();
-    const localizacao = document.getElementById("localizacao").value.toLowerCase().trim();
+    const termoServico = document.getElementById("servico") ? document.getElementById("servico").value.toLowerCase().trim() : "";
+    const termoLocalizacao = document.getElementById("localizacao") ? document.getElementById("localizacao").value.toLowerCase().trim() : "";
 
-    const todos = obterProfissionais();
-
-    const filtrados = todos.filter(p => {
-        const bateuServico = !servico || p.profissao.toLowerCase().includes(servico) || p.nome.toLowerCase().includes(servico);
-        const bateuLocal = !localizacao || p.cidade.toLowerCase().includes(localizacao) || p.bairro.toLowerCase().includes(localizacao);
-
-        return bateuServico && bateuLocal;
+    const resultadosFiltrados = profissionais.filter(prof => {
+        const atendeServico = prof.servico.toLowerCase().includes(termoServico);
+        const atendeLocalizacao = prof.cidade.toLowerCase().includes(termoLocalizacao) || 
+                                  prof.bairro.toLowerCase().includes(termoLocalizacao);
+        return atendeServico && atendeLocalizacao;
     });
 
-    renderizarProfissionais(filtrados);
+    exibirProfissionais(resultadosFiltrados);
 }
 
-// Carrega todos os profissionais assim que a página abre
+// Carrega os profissionais iniciais assim que a página abre
 document.addEventListener("DOMContentLoaded", () => {
-    const profissionais = obterProfissionais();
-    renderizarProfissionais(profissionais);
+    exibirProfissionais(profissionais);
 });

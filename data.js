@@ -1,38 +1,27 @@
-// Lista inicial de profissionais cadastrados
-const profissionaisIniciais = [
+// Lista inicial de profissionais cadastrados no ServicosMz
+let profissionais = [
     {
         id: 1,
         nome: "João Manuel",
-        profissao: "Eletricista",
+        servico: "Eletricista",
         cidade: "Maputo",
         bairro: "KaMpfumu",
         whatsapp: "841234567"
     },
     {
         id: 2,
-        nome: "António Carlos",
-        profissao: "Canalizador",
+        nome: "Carlos Sitoe",
+        servico: "Canalizador",
         cidade: "Matola",
-        bairro: "Machava",
-        whatsapp: "859876543"
+        bairro: "Futuhi",
+        whatsapp: "821234567"
     },
     {
         id: 3,
-        nome: "Pedro Miguel",
-        profissao: "Mecânico",
-        cidade: "Maputo",
-        bairro: "Alto Maé",
-        whatsapp: "820001122"
+        nome: "Amélia Macamo",
+        servico: "Pintora",
+        cidade: "Beira",
+        bairro: "Chota",
+        whatsapp: "861234567"
     }
 ];
-
-// Carrega os dados salvos ou usa a lista inicial
-function obterProfissionais() {
-    const salvos = localStorage.getItem("servicosmz_profissionais");
-    if (salvos) {
-        return JSON.parse(salvos);
-    } else {
-        localStorage.setItem("servicosmz_profissionais", JSON.stringify(profissionaisIniciais));
-        return profissionaisIniciais;
-    }
-}
