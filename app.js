@@ -1,48 +1,52 @@
-// Função para renderizar os cards de profissionais no DOM
-function exibirProfissionais(lista) {
-    const container = document.getElementById("resultados");
-    if (!container) return;
+document.addEventListener("DOMContentLoaded", async () => {
+  // Carrega os dados da planilha via Google Apps Script
+  let profissionais = await carregarProfissionais();
+  
+  const container = document.getElementById("lista-profissionais");
+  const inputBusca = document.getElementById("input-busca");
+  const inputLocalizacao = document.getElementById("input-localizacao");
+  const btnPesquisar = document.getElementById("btn-pesquisar");
 
+  function renderizarLista(lista) {
+    if (!container) return;
     container.innerHTML = "";
 
     if (lista.length === 0) {
-        container.innerHTML = "<p>Nenhum profissional encontrado com estes critérios.</p>";
-        return;
+      container.innerHTML = "<p>Nenhum profissional encontrado.</p>";
+      return;
     }
 
     lista.forEach(prof => {
-        const card = document.createElement("div");
-        card.className = "card-profissional";
-        card.innerHTML = `
-            <h3>${prof.nome}</h3>
-            <p><strong>Serviço:</strong> ${prof.servico}</p>
-            <p><strong>Localização:</strong> ${prof.bairro}, ${prof.cidade}</p>
-            <a href="https://wa.me/258${prof.whatsapp}?text=Olá%20${encodeURIComponent(prof.nome)},%20encontrei%20o%20seu%20contacto%20no%20ServiçosMz!" 
-               target="_blank" 
-               class="btn-whatsapp">
-               Contactar via WhatsApp
-            </a>
-        `;
-        container.appendChild(card);
+      const card = document.createElement("div");
+      card.className = "card-profissional";
+      card.innerHTML = `
+        <h3>${prof.nome}</h3>
+        <p><strong>Serviço:</strong> ${prof.categoria}</p>
+        <p><strong>Localização:</strong> ${prof.localizacao}</p>
+        <a href="https://wa.me/258${prof.telefone}" target="_blank" class="btn-whatsapp">
+          Contactar via WhatsApp
+        </a>
+      `;
+      container.appendChild(card);
     });
-}
+  }
 
-// Função executada ao clicar no botão Pesquisar
-function pesquisar() {
-    const termoServico = document.getElementById("servico") ? document.getElementById("servico").value.toLowerCase().trim() : "";
-    const termoLocalizacao = document.getElementById("localizacao") ? document.getElementById("localizacao").value.toLowerCase().trim() : "";
+  // Renderiza a lista inicial
+  renderizarLista(profissionais);
 
-    const resultadosFiltrados = profissionais.filter(prof => {
-        const atendeServico = prof.servico.toLowerCase().includes(termoServico);
-        const atendeLocalizacao = prof.cidade.toLowerCase().includes(termoLocalizacao) || 
-                                  prof.bairro.toLowerCase().includes(termoLocalizacao);
-        return atendeServico && atendeLocalizacao;
+  // Lógica de pesquisa
+  if (btnPesquisar) {
+    btnPesquisar.addEventListener("click", () => {
+      const termoServico = inputBusca ? inputBusca.value.toLowerCase().trim() : "";
+      const termoLocal = inputLocalizacao ? inputLocalizacao.value.toLowerCase().trim() : "";
+
+      const filtrados = profissionais.filter(prof => {
+        const atendeServico = (prof.categoria || "").toLowerCase().includes(termoServico);
+        const atendeLocal = (prof.localizacao || "").toLowerCase().includes(termoLocal);
+        return atendeServico && atendeLocal;
+      });
+
+      renderizarLista(filtrados);
     });
-
-    exibirProfissionais(resultadosFiltrados);
-}
-
-// Carrega os profissionais iniciais assim que a página abre
-document.addEventListener("DOMContentLoaded", () => {
-    exibirProfissionais(profissionais);
+  }
 });
