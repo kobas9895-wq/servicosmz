@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("form-cadastro");
+  const form = document.getElementById("form-cadastro") || document.querySelector("form");
 
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const btnSubmit = form.querySelector('button[type="submit"]');
+      const btnSubmit = form.querySelector('button[type="submit"]') || form.querySelector("button");
       const textoOriginal = btnSubmit ? btnSubmit.textContent : "Criar Perfil";
       
       if (btnSubmit) {
@@ -13,17 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmit.disabled = true;
       }
 
-      // Obtém os valores dos campos (com suporte a Cidade/Bairro ou Localização)
-      const nome = document.getElementById("nome") ? document.getElementById("nome").value : "";
-      const categoria = document.getElementById("categoria") ? document.getElementById("categoria").value : "";
-      const cidade = document.getElementById("cidade") ? document.getElementById("cidade").value : "";
-      const bairro = document.getElementById("bairro") ? document.getElementById("bairro").value : "";
-      const localizacaoCampo = document.getElementById("localizacao") ? document.getElementById("localizacao").value : "";
-      const telefone = document.getElementById("telefone") ? document.getElementById("telefone").value : "";
+      // Função auxiliar para procurar o valor de um campo por vários IDs ou nomes possíveis
+      function getVal(selectors) {
+        for (let sel of selectors) {
+          let el = document.getElementById(sel) || document.querySelector(`[name="${sel}"]`);
+          if (el && el.value) return el.value.trim();
+        }
+        return "";
+      }
 
-      // Junta Cidade e Bairro caso existam separadamente
+      const nome = getVal(["nome", "nome-completo", "nomeCompleto", "name"]);
+      const categoria = getVal(["categoria", "profissao", "servico", "profissao-servico"]);
+      const cidade = getVal(["cidade", "city"]);
+      const bairro = getVal(["bairro", "neighborhood"]);
+      const localizacaoCampo = getVal(["localizacao", "location"]);
+      const telefone = getVal(["telefone", "whatsapp", "contacto", "phone"]);
+
+      // Combina Bairro e Cidade
       let localizacaoFinal = localizacaoCampo;
-      if (!localizacaoFinal && (cidade || bairro)) {
+      if (!localizacaoFinal) {
         localizacaoFinal = [bairro, cidade].filter(Boolean).join(", ");
       }
 
