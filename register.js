@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbziqsmjQziQ7d8JPilQ6xbU6H0hck02Dr9YjX_FBkAZCKDCFIL9WjjpzkJwenwSFgabOQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwQnoDgeLf78ESNM14el8JdFpbYzlEri7DjWRuoxH_MkELdaglZAY2vXVeAjSS4hsU_/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-cadastro");
