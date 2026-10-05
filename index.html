@@ -1,79 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServiçosMz - Encontre Profissionais em Moçambique</title>
-    <!-- Ligação para o ficheiro de estilos CSS na raiz -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiçosMz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Cabeçalho e Navegação -->
-    <header class="header">
-        <div class="logo">Serviços<span>Mz</span></div>
-        <a href="#registo" class="btn-primary">Ofereça os seus serviços</a>
-    </header>
+  <header class="header">
+    <div class="logo">ServiçosMz</div>
+    <a href="#cadastro" class="btn-primary">Ofereça os seus serviços</a>
+  </header>
 
-    <!-- Secção Principal e Pesquisa -->
-    <section class="hero">
-        <h1>Encontre os melhores profissionais perto de si</h1>
-        <p>Eletricistas, canalizadores, mecânicos e muito mais em Moçambique.</p>
+  <section class="hero">
+    <h1>Encontre os melhores profissionais perto de si</h1>
+    <p>Eletricistas, canalizadores, mecânicos e muito mais em Moçambique.</p>
+    
+    <div class="search-box">
+      <input type="text" id="search-service" placeholder="Que serviço procura? (ex: Eletricista)">
+      <input type="text" id="search-location" placeholder="Cidade ou bairro (ex: Maputo, Matola)">
+      <button id="btn-search" class="btn-search">Pesquisar</button>
+    </div>
+  </section>
 
-        <!-- Formulário de Busca -->
-        <form class="search-box" onsubmit="event.preventDefault(); pesquisar();">
-            <input type="text" id="servico" placeholder="Que serviço procura? (ex: Eletricista)">
-            <input type="text" id="localizacao" placeholder="Cidade ou bairro (ex: Maputo, Matola)">
-            <button type="submit" class="btn-search">Pesquisar</button>
-        </form>
-    </section>
+  <main class="container">
+    <h2>Profissionais Disponíveis</h2>
+    <div id="lista-profissionais"></div>
 
-    <!-- Secção de Resultados da Pesquisa -->
-    <main class="container">
-        <h2>Profissionais Disponíveis</h2>
-        <div id="resultados" class="grid-profissionais">
-            <!-- Os cartões dos profissionais serão carregados aqui via JavaScript -->
+    <section id="cadastro" class="card-cadastro">
+      <h2>Cadastre-se como Prestador de Serviços</h2>
+      <form id="form-cadastro">
+        <div class="form-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" required placeholder="Ex: João Manuel">
         </div>
-    </main>
 
-    <!-- Formulário de Registo do Profissional -->
-    <section id="registo" class="form-section">
-        <div class="container">
-            <h2>Cadastre-se como Prestador de Serviços</h2>
-            <form id="form-cadastro" onsubmit="cadastrarProfissional(event)">
-                <div class="form-group">
-                    <label for="nome">Nome Completo</label>
-                    <input type="text" id="nome" required placeholder="Ex: João Manuel">
-                </div>
-
-                <div class="form-group">
-                    <label for="profissao">Profissão / Serviço</label>
-                    <input type="text" id="profissao" required placeholder="Ex: Eletricista">
-                </div>
-
-                <div class="form-group">
-                    <label for="cidade">Cidade</label>
-                    <input type="text" id="cidade" required placeholder="Ex: Maputo">
-                </div>
-
-                <div class="form-group">
-                    <label for="bairro">Bairro</label>
-                    <input type="text" id="bairro" required placeholder="Ex: KaMpfumu">
-                </div>
-
-                <div class="form-group">
-                    <label for="whatsapp">Contacto WhatsApp</label>
-                    <input type="tel" id="whatsapp" required placeholder="Ex: 841234567">
-                </div>
-
-                <button type="submit" class="btn-submit">Criar Perfil</button>
-            </form>
+        <div class="form-group">
+          <label for="profissao">Profissão / Serviço</label>
+          <input type="text" id="profissao" required placeholder="Ex: Eletricista">
         </div>
-    </section>
 
-    <!-- Ficheiros JavaScript carregados da raiz -->
-    <script src="data.js"></script>
-    <script src="app.js"></script>
-    <script src="register.js"></script>
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" required placeholder="Ex: Maputo">
+        </div>
+
+        <div class="form-group">
+          <label for="bairro">Bairro</label>
+          <input type="text" id="bairro" required placeholder="Ex: KaMpfumu">
+        </div>
+
+        <div class="form-group">
+          <label for="WhatsApp">Contacto WhatsApp</label>
+          <input type="tel" id="WhatsApp" required placeholder="Ex: 841234567">
+        </div>
+
+        <button type="submit" class="btn-submit">Criar Perfil</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Ficheiros JavaScript carregados da raiz -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="register.js"></script>
 </body>
 </html>
